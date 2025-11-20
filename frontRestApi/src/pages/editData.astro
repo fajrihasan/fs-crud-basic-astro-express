@@ -1,0 +1,113 @@
+---
+import "../styles/global.css";
+import Lay from "../layouts/Layout.astro";
+---
+
+<Lay pageJudul="Edit Data">
+  <div class="min-h-full">
+    <form id="editForm" class="space-y-5 mx-auto max-w-7xl p-6">
+      <div class="grid gap-2">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="Product Name"
+          class="block border border-gray-300 rounded px-2 focus:border-green-700"
+        />
+      </div>
+
+      <div class="grid gap-2">
+        <label for="price">Price</label>
+        <input
+          id="price"
+          type="number"
+          placeholder="Product Price"
+          class="block border border-gray-300 rounded px-2 focus:border-green-700"
+        />
+      </div>
+
+      <div class="grid gap-2">
+        <label for="description">Description</label>
+        <input
+          id="description"
+          type="text"
+          placeholder="Product Description"
+          class="block border border-gray-300 rounded px-2 focus:border-green-700"
+        />
+      </div>
+
+      <div class="grid gap-2">
+        <label for="image">Image</label>
+        <input
+          id="image"
+          type="text"
+          placeholder="Image URL"
+          class="block border border-gray-300 rounded px-2 focus:border-green-700"
+        />
+      </div>
+
+      <button
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg"
+      >
+        Simpan Data
+      </button>
+    </form>
+  </div>
+</Lay>
+
+<script is:client="load">
+  const id = new URLSearchParams(window.location.search).get("id");
+  console.log("🟢 ID dari URL:", id);
+
+  async function loadData() {
+    try {
+      const res = await fetch(`http://localhost:2025/barangs/${id}`);
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+      const data = await res.json();
+      console.log("📦 Data barang:", data);
+
+      // Isi form
+      document.getElementById("name").value = data.name;
+      document.getElementById("price").value = data.price;
+      document.getElementById("description").value = data.description;
+      document.getElementById("image").value = data.image;
+    } catch (err) {
+      console.error("❌ Gagal load data:", err);
+      alert("Gagal memuat data barang!");
+    }
+  }
+
+  loadData();
+
+  // Update data
+  document.getElementById("editForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const body = {
+      name: document.getElementById("name").value,
+      price: document.getElementById("price").value,
+      description: document.getElementById("description").value,
+      image: document.getElementById("image").value,
+    };
+
+    console.log("📤 Data yang dikirim:", body);
+
+    try {
+      const res = await fetch(`http://localhost:2025/barangs/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        alert("✅ Data berhasil diupdate!");
+        window.location.href = "/";
+      } else {
+        alert("❌ Gagal update data!");
+      }
+    } catch (err) {
+      console.error("⚠️ Error update:", err);
+      alert("Terjadi kesalahan saat update data!");
+    }
+  });
+</script>

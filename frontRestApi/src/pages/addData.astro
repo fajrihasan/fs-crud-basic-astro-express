@@ -1,0 +1,105 @@
+---
+import Lay from "../layouts/Layout.astro";
+---
+
+<style>
+  label {
+    font-size: x-large;
+    font-weight: bold;
+  }
+</style>
+
+<Lay pageJudul="Tambah Data" class="h-full text-white">
+  <div class="min-h-full">
+    <form id="addForm" class="space-y-5 mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <!-- Name -->
+      <div class="grid gap-2">
+        <label>Name</label>
+        <input
+          type="text"
+          name="name"
+          placeholder="Enter the Product Name"
+          class="block border border-gray-300 rounded px-2 focus:border-green-700 placeholder:text-gray-500 sm:text-sm/6"
+        />
+      </div>
+
+      <!-- Price -->
+      <div class="grid gap-2">
+        <label>Price</label>
+        <input
+          type="number"
+          name="price"
+          min="0"
+          placeholder="Enter the Product Price"
+          class="block border border-gray-300 rounded px-2 focus:border-green-700 placeholder:text-gray-500 sm:text-sm/6"
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="grid gap-2">
+        <label>Description</label>
+        <input
+          type="text"
+          name="description"
+          placeholder="Enter the Product Description"
+          class="block border border-gray-300 rounded px-2 focus:border-green-700 placeholder:text-gray-500 sm:text-sm/6"
+        />
+      </div>
+
+      <!-- Image -->
+      <div class="grid gap-2">
+        <label>Image</label>
+        <input
+          type="text"
+          name="image"
+          placeholder="Enter the Url Product Image"
+          class="block border border-gray-300 rounded px-2 focus:border-green-700 placeholder:text-gray-500 sm:text-sm/6"
+        />
+      </div>
+
+      <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">
+        Tambah Data
+      </button>
+    </form>
+  </div>
+</Lay>
+
+<!-- Script -->
+<script>
+  const form = document.querySelector<HTMLFormElement>("#addForm");
+
+  if (form) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // ✅ Ambil semua input pakai FormData
+      const formData = new FormData(form);
+
+      const data = {
+        name: formData.get("name") as string,
+        price: parseFloat(formData.get("price") as string),
+        description: formData.get("description") as string,
+        image: formData.get("image") as string,
+      };
+
+      try {
+        const res = await fetch("http://localhost:2025/barangs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        if (res.ok) {
+          alert("✅ Data berhasil ditambahkan");
+          form.reset();
+          window.location.href = "/";
+        } else {
+          alert("❌ Gagal menambahkan data");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Terjadi error: " + (err as Error).message);
+      }
+    });
+  }
+</script>

@@ -1,0 +1,24 @@
+---
+import "../styles/global.css"
+import Card from "../components/card.astro"
+import Lay from "../layouts/Layout.astro";
+
+// Ambil data dari backend Express
+const res = await fetch("http://localhost:2025/barangs");
+const barangs = await res.json();
+---
+
+  <Lay pageJudul="Dashboard" class="h-full text-white">
+    <div class="min-h-full">
+
+      <!-- Main -->
+      <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {barangs.map((item: { id: unknown; name: unknown; price: unknown; }) => (
+            <Card id={item.id} name={item.name} price={item.price} />
+          ))}
+        </div>
+      </main>
+    </div>
+  </Lay>

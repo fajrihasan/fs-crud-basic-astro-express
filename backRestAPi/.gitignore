@@ -1,0 +1,44 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# dotenv environment variables
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Editor settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Output
+dist/
+build/
+
+# Prisma/Migrations
+prisma/dev.db
+prisma/migrations/
+
+# Ignore coverage reports
+coverage/
+
+# Ignore temporary files
+tmp/
+temp/
+
+# Ignore local database
+*.sqlite
+

@@ -1,0 +1,35 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Build output
+dist/
+.build/
+out/
+.env
+.env.*
+
+# Astro specific
+.cache/
+public/
+
+# VSCode and IDE configs
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Optional: Ignore test coverage
+coverage/
+
+# Local env files
+*.local
+

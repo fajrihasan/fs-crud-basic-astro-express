@@ -1,0 +1,14 @@
+---
+const { id,name, price } = Astro.props;
+import Button from "./button.astro";
+---
+
+<div class="bg-gray-800 rounded-2xl p-6 shadow-lg hover:shadow-xl transition">
+  <h3 class="text-lg text-white font-bold">{name}</h3>
+  <p class="text-gray-400 mt-2">Rp {price.toLocaleString("id-ID")}</p>
+  <div class="flex gap-2">
+    <Button nama="Detail" warna="indigo" href=""/>
+    <Button nama="Hapus" warna="red" href={`/hapusData?id=${id}`}/>
+    <Button nama="Edit" warna="orange" href={`/editData?id=${id}`}/>
+  </div>
+</div>
