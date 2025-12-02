@@ -1,89 +1,30 @@
-const express = require('express')
-const router = express.Router()
+const barangService = require("./barang.service")
 
-const { getAllProduct, getBarangID, addBarangData, deleteBarangData, editBarangData } = require("./barang.service")
-
-router.get('/', async (req, res) => {
-    const barangs = await getAllProduct()
-
-    res.send(barangs)
-})
-router.get('/:id', async (req, res) => {
-    try {
-        const barangID = parseInt(req.params.id)
-        const barangs = await getBarangID(barangID)
-
+module.exports = {
+    getAllProduct: async (req, res) => {
+        const barangs = await barangService.getAllProduct()
         res.send(barangs)
-
-    } catch (error) {
-        res.status(400).send(error.message)
-    }
-})
-router.post('', async (req, res) => {
-    try {
+    },
+    getBarangID: async (req, res) => {
+        const barangID = parseInt(req.params.id)
+        const barangs = await barangService.getBarangID(barangID)
+        res.send(barangs)
+    },
+    addBarangData: async (req, res) => {
         const newBarangData = req.body
-
-        if (!(newBarangData.name && newBarangData.price && newBarangData.description && newBarangData.image)) {
-            return res.send("data harus di isi semua")
-        }
-        const barangs = await addBarangData(newBarangData)
-
-        res.send({
-            data: barangs,
-            message: "add barang succes"
-        })
-
-    } catch (error) {
-        res.status(400).send(error.message)
-    }
-})
-router.delete('/:id', async (req, res) => {
-    try {
-        const barangID = req.params.id
-
-        await deleteBarangData(parseInt(barangID))
-
+        const barangs = await barangService.addBarangData(newBarangData)
+        res.send(barangs)
+    },
+    deleteBarangData: async (req, res) => {
+        const barangID = parseInt(req.params.id)
+        await barangService.deleteBarangData(barangID)
         res.send("barang hapus succes")
-
-    } catch (error) {
-        res.status(400).send(error.message)
-    }
-
-})
-router.patch('/:id', async (req, res) => {
-    try {
-        const barangID = req.params.id
+    },
+    editBarangData: async (req, res) => {
+        const barangID = parseInt(req.params.id)
         const barangData = req.body
-
-        await editBarangData(parseInt(barangID), barangData)
-
-        res.send({
-            message: "mengupdate data succes"
-        })
-    } catch (error) {
-        res.status(400).send(error.message)
+        const barangs = await barangService.editBarangData(barangID, barangData)
+        res.send(barangs)
     }
+}
 
-})
-router.put('/:id', async (req, res) => {
-    try {
-        // console.log("📥 BODY BACKEND:", req.body); 
-        const barangID = req.params.id
-        const barangData = req.body
-
-        if (!(barangData.name && barangData.price && barangData.description && barangData.image)) {
-            return res.status(400).send("fields missing")
-        }
-        const barang = await editBarangData(parseInt(barangID), barangData)
-
-        res.status(200).send({
-            data: barang,
-            message: "mengupdate data succes"
-        })
-    } catch (error) {
-        // console.log("🔥 ERROR PRISMA:", error);  
-        res.status(400).send(error.message)
-    }
-})
-
-module.exports = router;

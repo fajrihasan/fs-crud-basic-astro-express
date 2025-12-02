@@ -12,8 +12,8 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization", "Accept"]
 }));
 
-const barangController = require("./barang/barang.controller")
-app.use('/barangs', barangController)
+const barangRoutes = require("./barang/barang.routes")
+app.use('/barangs', barangRoutes)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}!`)
